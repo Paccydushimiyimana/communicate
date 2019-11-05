@@ -13,7 +13,7 @@ SECRET_KEY = '%^_-&%o1(+zz&$7u75+npy&e5si*v)*+=y!409924(8e@w_-h$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['internal-memo.herokuapp.com']
+ALLOWED_HOSTS = ['ur-cs.herokuapp.com']
 
 # Application definition
 
