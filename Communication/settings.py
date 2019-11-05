@@ -1,15 +1,7 @@
 import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STATIC_URL = '/static/'
-STATICFILES_DIRS=[
-    os.path.join(BASE_DIR,'static')
-]
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -21,10 +13,7 @@ SECRET_KEY = '%^_-&%o1(+zz&$7u75+npy&e5si*v)*+=y!409924(8e@w_-h$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '.ngrok.io',
-    '127.0.0.1',
-    ]
+ALLOWED_HOSTS = ['internal-memo.herokuapp.com']
 
 # Application definition
 
@@ -43,6 +32,7 @@ INSTALLED_APPS = [
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -76,12 +66,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Communication.wsgi.application'
 
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 
 DATABASES = {
     'default': {
@@ -126,9 +110,18 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+STATIC_URL = '/static/'
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR,'static')
+]
+
+STATIC_ROOT  =   os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'account.MyUser'
 LOGIN_URL = 'login'
@@ -154,3 +147,7 @@ MAILCHIMP_EMAIL_LIST_ID='f7fdfc1e59'
 TWILIO_ACCOUNT_SID = 'ACdcdcf8ee5127c3c67c56ea861c6004c6'
 TWILIO_AUTH_TOKEN = '0ae05dd8d0b696968b31e65d25451641'
 TWILIO_PHONE_NUMBER= '+12513877681'
+
+import dj_database_url
+prod_db = dj_database_url.config(conn_max_age=500)
+DATABASES['deafault'].update(prod_db)
